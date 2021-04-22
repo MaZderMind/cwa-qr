@@ -10,10 +10,10 @@ PUBLIC_KEY = base64.standard_b64decode(PUBLIC_KEY_STR.encode('ascii'))
 
 class CwaEventDescription(object):
 	def __init__(self):
-		"""Description of the Location, Optional, String, max 100 Characters"""
+		"""Description of the Location, Required, String, max 100 Characters"""
 		self.locationDescription: str = None;
 
-		"""Address of the Location, Optional, String, max 100 Characters"""
+		"""Address of the Location, Required, String, max 100 Characters"""
 		self.locationAddress: str = None;
 
 		"""Start of the Event, Optional, datetime in UTC"""
@@ -50,7 +50,7 @@ class CwaEventDescription(object):
 
 		But sometimes it is Important to be able to re-generate the exact same Code ie. from a Database or other deterministic Sourcers. If this is important to you, you can specify your own 16-Bytes in the `randomSeed` Parameter of the `CwaEventDescription` Object. You can easily generate it with [`secrets.token_bytes(16)`](https://docs.python.org/3/library/secrets.html#secrets.token_bytes).
 		"""
-		self.randomSeed = None
+		self.randomSeed: Bytes = None
 
 
 def generatePayload(eventDescription: CwaEventDescription):
