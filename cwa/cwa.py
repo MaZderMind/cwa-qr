@@ -1,8 +1,9 @@
 import base64
-import cwa_pb2 as lowlevel
 import qrcode
 import os
 from datetime import datetime
+
+from . import cwa_pb2 as lowlevel
 
 PUBLIC_KEY_STR = 'gwLMzE153tQwAOf2MZoUXXfzWTdlSpfS99iZffmcmxOG9njSK4RTimFOFwDh6t0Tyw8XR01ugDYjtuKwjjuK49Oh83FWct6XpefPi9Skjxvvz53i9gaMmUEc96pbtoaA'
 PUBLIC_KEY = base64.standard_b64decode(PUBLIC_KEY_STR.encode('ascii'))

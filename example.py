@@ -3,7 +3,7 @@
 import io
 from datetime import datetime, timedelta
 
-import cwa
+from cwa import cwa
 import qrcode.image.svg
 
 eventDescription = cwa.CwaEventDescription()
