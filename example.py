@@ -1,7 +1,7 @@
-#!/usr/bin/env python3
+#!/usr/bin/env python
 
 import io
-from datetime import datetime, timedelta, timezone
+from datetime import datetime, timedelta
 
 import cwa
 import qrcode.image.svg
@@ -9,8 +9,8 @@ import qrcode.image.svg
 eventDescription = cwa.CwaEventDescription()
 eventDescription.locationDescription = 'Zuhause'
 eventDescription.locationAddress = 'Gau-Odernheim'
-eventDescription.startDateTime = datetime.now(timezone.utc)
-eventDescription.endDateTime = datetime.now(timezone.utc) + timedelta(days=2)
+eventDescription.startDateTime = datetime.utcnow()
+eventDescription.endDateTime = datetime.utcnow() + timedelta(days=2)
 eventDescription.locationType = cwa.lowlevel.LOCATION_TYPE_PERMANENT_WORKPLACE
 eventDescription.defaultCheckInLengthInMinutes = 4 * 60
 qr = cwa.generateQrCode(eventDescription)
