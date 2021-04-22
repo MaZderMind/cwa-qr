@@ -12,7 +12,7 @@ The Interface described in the Document is implemented, the undocumented Pieces 
 
 Usage
 -----
-The Library is not yet packaged as pip and so the `.py` files should be copied over to your project manually.
+The Library is not yet packaged as pip and so cwa-directory should be copied over to your project manually.
 
 Useas follows:
 ```py
