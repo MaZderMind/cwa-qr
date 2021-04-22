@@ -1,10 +1,8 @@
 #!/usr/bin/env python3
 
-import io
 from datetime import datetime, timedelta, timezone
 
 from cwa import cwa
-import qrcode.image.svg
 
 eventDescription = cwa.CwaEventDescription()
 eventDescription.locationDescription = 'Zuhause'
@@ -19,11 +17,13 @@ img = qr.make_image(fill_color="black", back_color="white")
 img.save('example.png')
 print("generated example.png")
 
+# import io
 # img_bytes = io.BytesIO()
 # img.save(img_bytes)
 # print(len(img_bytes.getvalue()), " bytes of png")
 
 
+# import qrcode.image.svg
 # svg = qr.make_image(image_factory=qrcode.image.svg.SvgPathFillImage)
 # svg.save('example.svg')
 
