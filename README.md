@@ -85,4 +85,4 @@ But sometimes it is important to be able to re-generate exactly the same code, e
 
 Python 2/3
 ----------
-This library is targeted to Python 3, however there is a backport to Python 2 available at https://github.com/MaZderMind/cwa-qr/tree/py2
+This library supports Python 3.6+, however there is a backport to Python 2 available at https://github.com/MaZderMind/cwa-qr/tree/py2
