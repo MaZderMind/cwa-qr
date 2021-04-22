@@ -18,7 +18,7 @@ The Library is not yet packaged as pip and so cwa-directory should be copied ove
 
 Useas follows:
 ```py
-#!/usr/bin/env python3
+#!/usr/bin/env python
 
 import io
 from datetime import datetime, timedelta, timezone
