@@ -10,10 +10,10 @@ PUBLIC_KEY = base64.standard_b64decode(PUBLIC_KEY_STR.encode('ascii'))
 
 class CwaEventDescription(object):
 	def __init__(self):
-		"""Description of the Location, Optional, String, max 100 Characters"""
+		"""Description of the Location, Required, String, max 100 Characters"""
 		self.locationDescription = None;
 
-		"""Address of the Location, Optional, String, max 100 Characters"""
+		"""Address of the Location, Required, String, max 100 Characters"""
 		self.locationAddress = None;
 
 		"""Start of the Event, Optional, datetime in UTC"""
