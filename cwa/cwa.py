@@ -60,8 +60,8 @@ def generatePayload(eventDescription):
 	payload.locationData.version = 1
 	payload.locationData.description = eventDescription.locationDescription
 	payload.locationData.address = eventDescription.locationAddress
-	payload.locationData.startTimestamp = int(eventDescription.startDateTime.strftime('%s')) if eventDescription.startDateTime else None
-	payload.locationData.endTimestamp = int(eventDescription.endDateTime.strftime('%s')) if eventDescription.endDateTime else None
+	payload.locationData.startTimestamp = int(eventDescription.startDateTime.strftime('%s')) if eventDescription.startDateTime else 0
+	payload.locationData.endTimestamp = int(eventDescription.endDateTime.strftime('%s')) if eventDescription.endDateTime else 0
 
 	payload.crowdNotifierData.version = 1
 	payload.crowdNotifierData.publicKey = PUBLIC_KEY
@@ -69,8 +69,8 @@ def generatePayload(eventDescription):
 
 	cwaLocationData = lowlevel.CWALocationData()
 	cwaLocationData.version = 1
-	cwaLocationData.type = eventDescription.locationType
-	cwaLocationData.defaultCheckInLengthInMinutes = eventDescription.defaultCheckInLengthInMinutes
+	cwaLocationData.type = eventDescription.locationType if eventDescription.locationType is not None else lowlevel.LOCATION_TYPE_UNSPECIFIED
+	cwaLocationData.defaultCheckInLengthInMinutes = eventDescription.defaultCheckInLengthInMinutes if eventDescription.defaultCheckInLengthInMinutes is not None else 0
 
 	payload.countryData = cwaLocationData.SerializeToString()
 	return payload
