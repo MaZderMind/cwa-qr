@@ -1,22 +1,22 @@
-Python Implementation of the CoronaWarnApp (CWA) Event Registration
+Python implementation of the Corona-Warn-App (CWA) Event Registration
 ===================================================================
 
 **This is the Python2 Version. For Python3 see** https://github.com/MaZderMind/cwa-qr/tree/main
 
-This is an Implementation of the Protocol used to generate Event-Location QR-Codes for the CoronaWarnApp (CWA) as described in [
+This is an implementation of the Protocol used to generate event and location QR codes for the Corona-Warn-App (CWA) as described in [
 Corona-Warn-App: Documentation – Event Registration - Summary](https://github.com/corona-warn-app/cwa-documentation/blob/c0e2829/event_registration.md).
 
 **This is not an official implementation – use it at your own risk** (as far as that's possible, these days…).
 
 State
 -----
-The Interface described in the Document is implemented, the undocumented Pieces (Public Key Value, Seed Length, Versions etc.) have been taken from the Open Source iOS Client Application. As Far as I know the Interface has been fully implemented, but without an actual positive Corona Test there is no way to do an End-to-End verification.
+The Interface described in the Document is implemented, the undocumented pieces (Public Key Value, Seed Length, Versions etc.) have been taken from the Open Source iOS Client Application. As far as I know the interface has been fully implemented, but without an actual positive Corona Test there is no way to do an End-to-End verification.
 
 Usage
 -----
 The Library is not yet packaged as pip and so cwa-directory should be copied over to your project manually.
 
-Useas follows:
+Use as follows:
 ```py
 #!/usr/bin/env python
 
@@ -76,11 +76,11 @@ CwaEventDescription
 	- `cwa.lowlevel.LOCATION_TYPE_TEMPORARY_CLUB_ACTIVITY `= 10
 	- `cwa.lowlevel.LOCATION_TYPE_TEMPORARY_PRIVATE_EVENT `= 11
 	- `cwa.lowlevel.LOCATION_TYPE_TEMPORARY_WORSHIP_SERVICE `= 12
-- `defaultCheckInLengthInMinutes`: Default Checkout-Time im Minutes, Optional
+- `defaultCheckInLengthInMinutes`: Default Check-out time in minutes, Optional
 - `randomSeed`: Specific Seed, 16 Bytes, Optional, leave Empty if unsure, see Below for Explanation
 
 Random Seed
 -----------
-To Mitigate [Profiling of Venues](https://github.com/corona-warn-app/cwa-documentation/blob/c0e2829/event_registration.md#profiling-of-venues), each QR-Code contains a 16 Bytes long random Seed Value, that makes each Code even with the same Data unique. This Way a Location can generate a fresh QR-Code each day and avoid the Risk of being tracked.
+To mitigate [Profiling of Venues](https://github.com/corona-warn-app/cwa-documentation/blob/c0e2829/event_registration.md#profiling-of-venues), each QR-Code contains a 16 Bytes long random Seed Value, that makes each code even with the same data unique. This way a location can generate a fresh QR-Code each day and avoid the risk of being tracked.
 
-But sometimes it is Important to be able to re-generate the exact same Code ie. from a Database or other deterministic Sourcers. If this is important to you, you can specify your own 16-Bytes in the `randomSeed` Parameter of the `CwaEventDescription` Object. You can easily generate it with [`os.urandom(16)`](https://docs.python.org/2.7/library/os.html#os.urandom).
+But sometimes it is important to be able to re-generate exactly the same code, e.g. from a database or other deterministic sources. If this is important to you, you can specify your own 16 bytes in the `randomSeed` Parameter of the `CwaEventDescription` object. You can easily generate it with [`os.urandom(16)`](https://docs.python.org/2.7/library/os.html#os.urandom).
