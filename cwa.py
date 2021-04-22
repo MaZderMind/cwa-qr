@@ -9,14 +9,42 @@ PUBLIC_KEY = base64.standard_b64decode(PUBLIC_KEY_STR.encode('ascii'))
 
 class CwaEventDescription(object):
 	def __init__(self):
-		self.locationDescription = None;
-		self.locationAddress = None;
-		self.startDateTime = None;
-		self.endDateTime = None;
-		self.locationType = None
-		self.defaultCheckInLengthInMinutes = None
+		"""Description of the Location, Optional, String, max 100 Characters"""
+		self.locationDescription: str = None;
 
-def generatePayload(eventDescription):
+		"""Address of the Location, Optional, String, max 100 Characters"""
+		self.locationAddress: str = None;
+
+		"""Start of the Event, Optional, datetime in UTC"""
+		self.startDateTime: datetime = None;
+
+		"""End of the Event, Optional, datetime in UTC"""
+		self.endDateTime: datetime = None;
+
+		"""Type of the Location, Optional
+
+		one of
+		- cwa.lowlevel.LOCATION_TYPE_UNSPECIFIED = 0
+		- cwa.lowlevel.LOCATION_TYPE_PERMANENT_OTHER = 1
+		- cwa.lowlevel.LOCATION_TYPE_TEMPORARY_OTHER = 2
+		- cwa.lowlevel.LOCATION_TYPE_PERMANENT_RETAIL = 3
+		- cwa.lowlevel.LOCATION_TYPE_PERMANENT_FOOD_SERVICE = 4
+		- cwa.lowlevel.LOCATION_TYPE_PERMANENT_CRAFT = 5
+		- cwa.lowlevel.LOCATION_TYPE_PERMANENT_WORKPLACE = 6
+		- cwa.lowlevel.LOCATION_TYPE_PERMANENT_EDUCATIONAL_INSTITUTION = 7
+		- cwa.lowlevel.LOCATION_TYPE_PERMANENT_PUBLIC_BUILDING = 8
+		- cwa.lowlevel.LOCATION_TYPE_TEMPORARY_CULTURAL_EVENT = 9
+		- cwa.lowlevel.LOCATION_TYPE_TEMPORARY_CLUB_ACTIVITY = 10
+		- cwa.lowlevel.LOCATION_TYPE_TEMPORARY_PRIVATE_EVENT = 11
+		- cwa.lowlevel.LOCATION_TYPE_TEMPORARY_WORSHIP_SERVICE = 12
+		"""
+		self.locationType: int = None
+
+		"""Default Checkout-Time im Minutes, Optional"""
+		self.defaultCheckInLengthInMinutes: int = None
+
+
+def generatePayload(eventDescription: CwaEventDescription):
 	payload = lowlevel.QRCodePayload()
 	payload.version = 1
 
@@ -38,7 +66,7 @@ def generatePayload(eventDescription):
 	payload.countryData = cwaLocationData.SerializeToString()
 	return payload
 
-def generateUrl(eventDescription):
+def generateUrl(eventDescription: CwaEventDescription):
 	payload = generatePayload(eventDescription)
 	serialized = payload.SerializeToString()
 	encoded = base64.urlsafe_b64encode(serialized)
@@ -46,7 +74,7 @@ def generateUrl(eventDescription):
 
 	return url
 
-def generateQrCode(eventDescription):
+def generateQrCode(eventDescription: CwaEventDescription):
 	qr = qrcode.QRCode()
 	qr.add_data(generateUrl(eventDescription))
 	qr.make(fit=True)
