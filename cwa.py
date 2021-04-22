@@ -43,6 +43,14 @@ class CwaEventDescription(object):
 		"""Default Checkout-Time im Minutes, Optional"""
 		self.defaultCheckInLengthInMinutes: int = None
 
+		"""Specific Seed, 16 Bytes, Optional, leave Empty if unsure
+
+		To Mitigate [Profiling of Venues](https://github.com/corona-warn-app/cwa-documentation/blob/c0e2829/event_registration.md#profiling-of-venues), each QR-Code contains a 16 Bytes long random Seed Value, that makes each Code even with the same Data unique. This Way a Location can generate a fresh QR-Code each day and avoid the Risk of being tracked.
+
+		But sometimes it is Important to be able to re-generate the exact same Code ie. from a Database or other deterministic Sourcers. If this is important to you, you can specify your own 16-Bytes in the `randomSeed` Parameter of the `CwaEventDescription` Object. You can easily generate it with [`secrets.token_bytes(16)`](https://docs.python.org/3/library/secrets.html#secrets.token_bytes).
+		"""
+		self.randomSeed = None
+
 
 def generatePayload(eventDescription: CwaEventDescription):
 	payload = lowlevel.QRCodePayload()
@@ -56,7 +64,7 @@ def generatePayload(eventDescription: CwaEventDescription):
 
 	payload.crowdNotifierData.version = 1
 	payload.crowdNotifierData.publicKey = PUBLIC_KEY
-	payload.crowdNotifierData.cryptographicSeed = secrets.token_bytes(16)
+	payload.crowdNotifierData.cryptographicSeed = eventDescription.randomSeed if eventDescription.randomSeed is not None else secrets.token_bytes(16)
 
 	cwaLocationData = lowlevel.CWALocationData()
 	cwaLocationData.version = 1
