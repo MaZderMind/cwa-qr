@@ -1,9 +1,10 @@
 #!/usr/bin/env python3
 
-from datetime import datetime, timedelta, timezone
+from datetime import datetime, time, timedelta, timezone
 
-from cwa import cwa
+from cwa import cwa, rollover
 
+# Construct Event-Descriptor
 eventDescription = cwa.CwaEventDescription()
 eventDescription.locationDescription = 'Zuhause'
 eventDescription.locationAddress = 'Gau-Odernheim'
@@ -11,6 +12,17 @@ eventDescription.startDateTime = datetime.now(timezone.utc)
 eventDescription.endDateTime = datetime.now(timezone.utc) + timedelta(days=2)
 eventDescription.locationType = cwa.lowlevel.LOCATION_TYPE_PERMANENT_WORKPLACE
 eventDescription.defaultCheckInLengthInMinutes = 4 * 60
+
+# Renew QR-Code every night at 4:00
+seed = rollover.rolloverDate(datetime.now(), time(4, 0))
+print("seed", seed)
+eventDescription.seed = seed
+
+# Generate URL for Debugging purpose
+url = cwa.generateUrl(eventDescription)
+print('url', url)
+
+# Generate QR-Code
 qr = cwa.generateQrCode(eventDescription)
 
 img = qr.make_image(fill_color="black", back_color="white")

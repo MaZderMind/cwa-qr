@@ -13,7 +13,6 @@ def test_rollover():
     assert rollover.rolloverDate(datetime(2021, 1, 1, 22, 0), rollover_time) == date(2021, 1, 1)
     assert rollover.rolloverDate(datetime(2021, 1, 1, 23, 59), rollover_time) == date(2021, 1, 1)
 
-
     # between 0:00 and 4:00 on the following day, it's still the day before
     assert rollover.rolloverDate(datetime(2021, 1, 2, 0, 0), rollover_time) == date(2021, 1, 1)
     assert rollover.rolloverDate(datetime(2021, 1, 2, 2, 0), rollover_time) == date(2021, 1, 1)

@@ -1,8 +1,8 @@
 import base64
-from typing import Optional
+import random
+from typing import Optional, Union
 
 import qrcode
-import secrets
 from datetime import datetime
 
 from . import cwa_pb2 as lowlevel
@@ -49,18 +49,20 @@ class CwaEventDescription(object):
         """Default Checkout-Time im Minutes, Optional"""
         self.defaultCheckInLengthInMinutes: Optional[int] = None
 
-        """Specific Seed, 16 Bytes, Optional, leave Empty if unsure
+        """Specific Seed, Optional"""
+        self.seed: Union[str, bytes, int, float, datetime, None] = None
 
-        To Mitigate Profiling of Venues, each QR-Code contains a 16 Bytes long random Seed Value, that makes each Code
-        even with the same Data unique. This Way a Location can generate a fresh QR-Code each day and avoid the Risk
-        of being tracked.
 
-        But sometimes it is Important to be able to re-generate the exact same Code ie. from a Database or other
-        deterministic Sourcers. If this is important to you, you can specify your own 16-Bytes in the `randomSeed` Parameter
-        of the `CwaEventDescription` Object. You can easily generate it with
-        [`secrets.token_bytes(16)`](https://docs.python.org/3/library/secrets.html#secrets.token_bytes).
-        """
-        self.randomSeed: Optional[bytes] = None
+def constructSeed(seed: Union[str, bytes, int, float, datetime, None]) -> bytes:
+    if seed is None:
+        seed = b''
+
+    elif isinstance(seed, datetime):
+        seed = str(seed)
+
+    r = random.Random()
+    r.seed(seed)
+    return r.randbytes(16)
 
 
 def generatePayload(eventDescription: CwaEventDescription) -> lowlevel.QRCodePayload:
@@ -77,8 +79,7 @@ def generatePayload(eventDescription: CwaEventDescription) -> lowlevel.QRCodePay
 
     payload.crowdNotifierData.version = 1
     payload.crowdNotifierData.publicKey = PUBLIC_KEY
-    payload.crowdNotifierData.cryptographicSeed = eventDescription.randomSeed if \
-        eventDescription.randomSeed is not None else secrets.token_bytes(16)
+    payload.crowdNotifierData.cryptographicSeed = constructSeed(eventDescription.seed)
 
     cwaLocationData = lowlevel.CWALocationData()
     cwaLocationData.version = 1

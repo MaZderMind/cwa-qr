@@ -19,11 +19,12 @@ Use as follows:
 #!/usr/bin/env python3
 
 import io
-from datetime import datetime, timedelta, timezone
+from datetime import datetime, time, timedelta, timezone
 
-import cwa
+from cwa import cwa, rollover
 import qrcode.image.svg
 
+# Construct Event-Descriptor
 eventDescription = cwa.CwaEventDescription()
 eventDescription.locationDescription = 'Zuhause'
 eventDescription.locationAddress = 'Gau-Odernheim'
@@ -31,6 +32,11 @@ eventDescription.startDateTime = datetime.now(timezone.utc)
 eventDescription.endDateTime = datetime.now(timezone.utc) + timedelta(days=2)
 eventDescription.locationType = cwa.lowlevel.LOCATION_TYPE_PERMANENT_WORKPLACE
 eventDescription.defaultCheckInLengthInMinutes = 4 * 60
+
+# Renew QR-Code every night at 4:00
+eventDescription.seed = rollover.rolloverDate(datetime.now(), time(4, 0))
+
+# Generate QR-Code
 qr = cwa.generateQrCode(eventDescription)
 
 # Render QR-Code to PNG-File
@@ -75,13 +81,7 @@ CwaEventDescription
 	- `cwa.lowlevel.LOCATION_TYPE_TEMPORARY_PRIVATE_EVENT `= 11
 	- `cwa.lowlevel.LOCATION_TYPE_TEMPORARY_WORSHIP_SERVICE `= 12
 - `defaultCheckInLengthInMinutes`: Default Check-out time in minutes, Optional
-- `randomSeed`: Specific Seed, 16 Bytes, Optional, leave Empty if unsure, see Below for Explanation
-
-Random Seed
------------
-To mitigate [Profiling of Venues](https://github.com/corona-warn-app/cwa-documentation/blob/c0e2829/event_registration.md#profiling-of-venues), each QR-Code contains a 16 Bytes long random Seed Value, that makes each code even with the same data unique. This way a location can generate a fresh QR-Code each day and avoid the risk of being tracked.
-
-But sometimes it is important to be able to re-generate exactly the same code, e.g. from a database or other deterministic sources. If this is important to you, you can specify your own 16 bytes in the `randomSeed` Parameter of the `CwaEventDescription` object. You can easily generate it with [`secrets.token_bytes(16)`](https://docs.python.org/3/library/secrets.html#secrets.token_bytes).
+- `randomSeed`: Specific Seed
 
 Python 2/3
 ----------
