@@ -1,11 +1,11 @@
 import base64
-import random
 from typing import Optional, Union
 
 import qrcode
 from datetime import datetime
 
 from . import cwa_pb2 as lowlevel
+from . import seed
 
 PUBLIC_KEY_STR = 'gwLMzE153tQwAOf2MZoUXXfzWTdlSpfS99iZffmcmxOG9njSK4RTimFOFwDh6t0Tyw8XR01ugDYjtuKwj' \
                  'juK49Oh83FWct6XpefPi9Skjxvvz53i9gaMmUEc96pbtoaA'
@@ -53,18 +53,6 @@ class CwaEventDescription(object):
         self.seed: Union[str, bytes, int, float, datetime, None] = None
 
 
-def constructSeed(seed: Union[str, bytes, int, float, datetime, None]) -> bytes:
-    if seed is None:
-        seed = b''
-
-    elif isinstance(seed, datetime):
-        seed = str(seed)
-
-    r = random.Random()
-    r.seed(seed)
-    return bytes([r.randrange(0, 256) for _ in range(0, 16)])
-
-
 def generatePayload(eventDescription: CwaEventDescription) -> lowlevel.QRCodePayload:
     payload = lowlevel.QRCodePayload()
     payload.version = 1
@@ -79,7 +67,7 @@ def generatePayload(eventDescription: CwaEventDescription) -> lowlevel.QRCodePay
 
     payload.crowdNotifierData.version = 1
     payload.crowdNotifierData.publicKey = PUBLIC_KEY
-    payload.crowdNotifierData.cryptographicSeed = constructSeed(eventDescription.seed)
+    payload.crowdNotifierData.cryptographicSeed = seed.constructSeed(eventDescription.seed)
 
     cwaLocationData = lowlevel.CWALocationData()
     cwaLocationData.version = 1
