@@ -1,4 +1,6 @@
 import base64
+from typing import Optional
+
 import qrcode
 import secrets
 from datetime import datetime
@@ -14,16 +16,16 @@ PUBLIC_KEY = base64.standard_b64decode(PUBLIC_KEY_STR.encode('ascii'))
 class CwaEventDescription(object):
     def __init__(self):
         """Description of the Location, Required, String, max 100 Characters"""
-        self.locationDescription: str = None
+        self.locationDescription: Optional[str] = None
 
         """Address of the Location, Required, String, max 100 Characters"""
-        self.locationAddress: str = None
+        self.locationAddress: Optional[str] = None
 
         """Start of the Event, Optional, datetime in UTC"""
-        self.startDateTime: datetime = None
+        self.startDateTime: Optional[datetime] = None
 
         """End of the Event, Optional, datetime in UTC"""
-        self.endDateTime: datetime = None
+        self.endDateTime: Optional[datetime] = None
 
         """Type of the Location, Optional
 
@@ -42,10 +44,10 @@ class CwaEventDescription(object):
         - cwa.lowlevel.LOCATION_TYPE_TEMPORARY_PRIVATE_EVENT = 11
         - cwa.lowlevel.LOCATION_TYPE_TEMPORARY_WORSHIP_SERVICE = 12
         """
-        self.locationType: int = None
+        self.locationType: Optional[int] = None
 
         """Default Checkout-Time im Minutes, Optional"""
-        self.defaultCheckInLengthInMinutes: int = None
+        self.defaultCheckInLengthInMinutes: Optional[int] = None
 
         """Specific Seed, 16 Bytes, Optional, leave Empty if unsure
 
@@ -58,10 +60,10 @@ class CwaEventDescription(object):
         of the `CwaEventDescription` Object. You can easily generate it with
         [`secrets.token_bytes(16)`](https://docs.python.org/3/library/secrets.html#secrets.token_bytes).
         """
-        self.randomSeed: bytes = None
+        self.randomSeed: Optional[bytes] = None
 
 
-def generatePayload(eventDescription: CwaEventDescription):
+def generatePayload(eventDescription: CwaEventDescription) -> lowlevel.QRCodePayload:
     payload = lowlevel.QRCodePayload()
     payload.version = 1
 
@@ -89,7 +91,7 @@ def generatePayload(eventDescription: CwaEventDescription):
     return payload
 
 
-def generateUrl(eventDescription: CwaEventDescription):
+def generateUrl(eventDescription: CwaEventDescription) -> str:
     payload = generatePayload(eventDescription)
     serialized = payload.SerializeToString()
     encoded = base64.urlsafe_b64encode(serialized)
@@ -98,7 +100,7 @@ def generateUrl(eventDescription: CwaEventDescription):
     return url
 
 
-def generateQrCode(eventDescription: CwaEventDescription):
+def generateQrCode(eventDescription: CwaEventDescription) -> qrcode.QRCode:
     qr = qrcode.QRCode()
     qr.add_data(generateUrl(eventDescription))
     qr.make(fit=True)
