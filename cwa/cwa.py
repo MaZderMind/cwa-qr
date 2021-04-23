@@ -62,7 +62,7 @@ def constructSeed(seed: Union[str, bytes, int, float, datetime, None]) -> bytes:
 
     r = random.Random()
     r.seed(seed)
-    return r.randbytes(16)
+    return bytes([r.randrange(0, 256) for _ in range(0, 16)])
 
 
 def generatePayload(eventDescription: CwaEventDescription) -> lowlevel.QRCodePayload:
