@@ -2,6 +2,8 @@ import io
 import secrets
 from datetime import datetime, timedelta, timezone
 
+import qrcode
+
 from . import cwa
 
 fullEventDescription = cwa.CwaEventDescription()
@@ -39,14 +41,22 @@ def test_generate_wit_given_seed_creates_same_result():
     assert urlA == urlB
 
 
+def test_generate_url():
+    url = cwa.generateUrl(fullEventDescription)
+    assert url is not None
+    assert isinstance(url, str)
+
+
 def test_generate_payload_object():
     payload = cwa.generatePayload(fullEventDescription)
     assert payload is not None
+    assert isinstance(payload, cwa.lowlevel.QRCodePayload)
 
 
 def test_generate_qr_code():
     qr = cwa.generateQrCode(fullEventDescription)
     assert qr is not None
+    assert isinstance(qr, qrcode.QRCode)
 
 
 def test_generate_qr_code_png():
