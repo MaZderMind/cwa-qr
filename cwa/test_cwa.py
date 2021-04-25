@@ -1,5 +1,4 @@
 import io
-import secrets
 from datetime import datetime, timedelta, timezone
 
 import qrcode
@@ -28,17 +27,27 @@ def test_generate_with_all_parameters():
     assert url != ''
 
 
-def test_generate_without_given_seed_creates_different_results():
-    urlA = cwa.generateUrl(fullEventDescription)
-    urlB = cwa.generateUrl(fullEventDescription)
-    assert urlA != urlB
-
-
-def test_generate_wit_given_seed_creates_same_result():
-    fullEventDescription.randomSeed = secrets.token_bytes(16)
+def test_generate_without_seed_creates_same_results():
     urlA = cwa.generateUrl(fullEventDescription)
     urlB = cwa.generateUrl(fullEventDescription)
     assert urlA == urlB
+
+
+def test_generate_with_same_seed_creates_same_result():
+    fullEventDescription.seed = 'a'
+    urlA = cwa.generateUrl(fullEventDescription)
+    urlB = cwa.generateUrl(fullEventDescription)
+    assert urlA == urlB
+
+
+def test_generate_with_different_seeds_creates_different_results():
+    fullEventDescription.seed = 'a'
+    urlA = cwa.generateUrl(fullEventDescription)
+
+    fullEventDescription.seed = 'b'
+    urlB = cwa.generateUrl(fullEventDescription)
+
+    assert urlA != urlB
 
 
 def test_generate_url():

@@ -19,11 +19,12 @@ Use as follows:
 #!/usr/bin/env python3
 
 import io
-from datetime import datetime, timedelta, timezone
+from datetime import datetime, time, timedelta, timezone
 
 import cwa
 import qrcode.image.svg
 
+# Construct Event-Descriptor
 eventDescription = cwa.CwaEventDescription()
 eventDescription.locationDescription = 'Zuhause'
 eventDescription.locationAddress = 'Gau-Odernheim'
@@ -31,6 +32,11 @@ eventDescription.startDateTime = datetime.now(timezone.utc)
 eventDescription.endDateTime = datetime.now(timezone.utc) + timedelta(days=2)
 eventDescription.locationType = cwa.lowlevel.LOCATION_TYPE_PERMANENT_WORKPLACE
 eventDescription.defaultCheckInLengthInMinutes = 4 * 60
+
+# Renew QR-Code every night at 4:00
+eventDescription.seed = cwa.rolloverDate(datetime.now(), time(4, 0))
+
+# Generate QR-Code
 qr = cwa.generateQrCode(eventDescription)
 
 # Render QR-Code to PNG-File
@@ -75,13 +81,54 @@ CwaEventDescription
 	- `cwa.lowlevel.LOCATION_TYPE_TEMPORARY_PRIVATE_EVENT `= 11
 	- `cwa.lowlevel.LOCATION_TYPE_TEMPORARY_WORSHIP_SERVICE `= 12
 - `defaultCheckInLengthInMinutes`: Default Check-out time in minutes, Optional
-- `randomSeed`: Specific Seed, 16 Bytes, Optional, leave Empty if unsure, see Below for Explanation
+- `seed`: Seed to rotate the QR-Code, Optional, `[str, bytes, int, float, date, datetime]` or `None` (Default).
+  **Use with caution & read below!** If unsure, leave blank.
 
-Random Seed
------------
-To mitigate [Profiling of Venues](https://github.com/corona-warn-app/cwa-documentation/blob/c0e2829/event_registration.md#profiling-of-venues), each QR-Code contains a 16 Bytes long random Seed Value, that makes each code even with the same data unique. This way a location can generate a fresh QR-Code each day and avoid the risk of being tracked.
+Rotating QR-Codes
+-----------------
+From the [Documentation](https://github.com/corona-warn-app/cwa-documentation/blob/master/event_registration.md):
+> Profiling of Venues
+>
+> An adversary can collect this information for a single venue by scanning the QR code and extracting and storing the
+> data. To mitigate the risk, CWA encourages owners to regularly generate new QR codes for their venues. The more
+> frequent QR codes are updated, the more difficult it is to keep a central database with venue data up-to-date.
+> **However**, a new QR code should only be generated **when no visitor is at the event or location**, because
+> visitors can only warn each other **with the same QR code**.
 
-But sometimes it is important to be able to re-generate exactly the same code, e.g. from a database or other deterministic sources. If this is important to you, you can specify your own 16 bytes in the `randomSeed` Parameter of the `CwaEventDescription` object. You can easily generate it with [`secrets.token_bytes(16)`](https://docs.python.org/3/library/secrets.html#secrets.token_bytes).
+From an Application-Developers point of view, special care must be taken to decide if and when QR codes should be
+changed. A naive approach, i.e. changing the QR-Code on every call, would render the complete Warning-Chain totally
+useless **without anyone noticing**. Therefore, the Default of this Library as of 2021/04/26 is to **not seed the
+QR-Codes with random values**. This results in every QR-Code being generated without an explicit Seed to be identical,
+which minimizes the Risk of having QR-Codes that do not warn users as expected at the increased risk of profiling of
+Venues.
+
+As an Application-Developer you are encouraged to **ask you user if and when they want their QR-Codes to change** and
+explain to them that they should only rotate their Codes **when they are sure that nobody is at the location or in the
+venue** for at least 30 Minutes, to allow airborne particles to settle or get filtered out. Do **not make assumptions**
+regarding a good time to rotate QR-Codes (i.e. always at 4:00 am) because they will fail so warn people in some
+important Situations (nightclubs, hotels, night-shift working) **without anyone noticing**.
+
+To disable rotation of QR-Codes, specify None as the Seed (Default behaviour).
+
+The Library also gives you a utility to allow rotating QR-Codes at a given time of the day. Please make
+sure to also integrate some kind of Secret into the seed, to prevent an adversary from calculating  future QR-Codes.
+The Secret *must stay constant* over time, or the resulting QR-Codes will not correctly trigger warnings.
+
+```py
+import io
+from datetime import datetime, time
+
+import cwa
+
+# Construct Event-Descriptor
+eventDescription = cwa.CwaEventDescription()
+# …
+seedDate = cwa.rolloverDate(datetime.now(), time(4, 0))
+eventDescription.seed = "Some Secret" + str(seedDate)
+```
+
+this will keep the date-based seed until 4:00 am on the next day and only then roll over to the next day.
+See [test_rollover.py](cwa/test_rollover.py) for an in-depth look at the rollover code.
 
 Python 2/3
 ----------

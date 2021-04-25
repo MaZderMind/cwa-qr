@@ -1,11 +1,11 @@
 import base64
-from typing import Optional
+from typing import Optional, Union
 
 import qrcode
-import secrets
-from datetime import datetime
+from datetime import datetime, date
 
 from . import cwa_pb2 as lowlevel
+from . import seed
 
 PUBLIC_KEY_STR = 'gwLMzE153tQwAOf2MZoUXXfzWTdlSpfS99iZffmcmxOG9njSK4RTimFOFwDh6t0Tyw8XR01ugDYjtuKwj' \
                  'juK49Oh83FWct6XpefPi9Skjxvvz53i9gaMmUEc96pbtoaA'
@@ -49,18 +49,11 @@ class CwaEventDescription(object):
         """Default Checkout-Time im Minutes, Optional"""
         self.defaultCheckInLengthInMinutes: Optional[int] = None
 
-        """Specific Seed, 16 Bytes, Optional, leave Empty if unsure
+        """Seed to rotate the QR-Code, Optional, [str, bytes, int, float, date, datetime] or None (Default)
 
-        To Mitigate Profiling of Venues, each QR-Code contains a 16 Bytes long random Seed Value, that makes each Code
-        even with the same Data unique. This Way a Location can generate a fresh QR-Code each day and avoid the Risk
-        of being tracked.
-
-        But sometimes it is Important to be able to re-generate the exact same Code ie. from a Database or other
-        deterministic Sourcers. If this is important to you, you can specify your own 16-Bytes in the `randomSeed` Parameter
-        of the `CwaEventDescription` Object. You can easily generate it with
-        [`secrets.token_bytes(16)`](https://docs.python.org/3/library/secrets.html#secrets.token_bytes).
+        Use with caution & read the Section about *Rotating QR-Codes* in the README first! If unsure, leave blank.
         """
-        self.randomSeed: Optional[bytes] = None
+        self.seed: Union[str, bytes, int, float, date, datetime, None] = None
 
 
 def generatePayload(eventDescription: CwaEventDescription) -> lowlevel.QRCodePayload:
@@ -77,8 +70,7 @@ def generatePayload(eventDescription: CwaEventDescription) -> lowlevel.QRCodePay
 
     payload.crowdNotifierData.version = 1
     payload.crowdNotifierData.publicKey = PUBLIC_KEY
-    payload.crowdNotifierData.cryptographicSeed = eventDescription.randomSeed if \
-        eventDescription.randomSeed is not None else secrets.token_bytes(16)
+    payload.crowdNotifierData.cryptographicSeed = seed.constructSeed(eventDescription.seed)
 
     cwaLocationData = lowlevel.CWALocationData()
     cwaLocationData.version = 1
