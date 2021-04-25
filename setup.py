@@ -2,7 +2,7 @@
 from setuptools import find_packages, setup
 
 setup(
-    name='cwa',
+    name='cwa_qr',
     version='1.0',
     description='Python Implementation of the CoronaWarnApp (CWA) Event Registration',
     author='Greg Ward',

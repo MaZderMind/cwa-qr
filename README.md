@@ -22,23 +22,23 @@ Use as follows:
 import io
 from datetime import datetime, time, timedelta, timezone
 
-import cwa
+import cwa_qr
 import qrcode.image.svg
 
 # Construct Event-Descriptor
-event_description = cwa.CwaEventDescription()
+event_description = cwa_qr.CwaEventDescription()
 event_description.location_description = 'Zuhause'
 event_description.location_address = 'Gau-Odernheim'
 event_description.start_date_time = datetime.now(timezone.utc)
 event_description.end_date_time = datetime.now(timezone.utc) + timedelta(days=2)
-event_description.location_type = cwa.lowlevel.LOCATION_TYPE_PERMANENT_WORKPLACE
+event_description.location_type = cwa_qr.lowlevel.LOCATION_TYPE_PERMANENT_WORKPLACE
 event_description.default_check_in_length_in_minutes = 4 * 60
 
 # Renew QR-Code every night at 4:00
-event_description.seed = cwa.rollover_date(datetime.now(), time(4, 0))
+event_description.seed = cwa_qr.rollover_date(datetime.now(), time(4, 0))
 
 # Generate QR-Code
-qr = cwa.generate_qr_code(event_description)
+qr = cwa_qr.generate_qr_code(event_description)
 
 # Render QR-Code to PNG-File
 img = qr.make_image(fill_color="black", back_color="white")
@@ -118,17 +118,17 @@ The Secret *must stay constant* over time, or the resulting QR-Codes will not co
 import io
 from datetime import datetime, time
 
-import cwa
+import cwa_qr
 
 # Construct Event-Descriptor
-event_description = cwa.CwaEventDescription()
+event_description = cwa_qr.CwaEventDescription()
 # …
-seed_date = cwa.rollover_date(datetime.now(), time(4, 0))
+seed_date = cwa_qr.rollover_date(datetime.now(), time(4, 0))
 event_description.seed = "Some Secret" + str(seed_date)
 ```
 
 this will keep the date-based seed until 4:00 am on the next day and only then roll over to the next day.
-See [test_rollover.py](cwa/test_rollover.py) for an in-depth look at the rollover code.
+See [test_rollover.py](cwa_qr/test_rollover.py) for an in-depth look at the rollover code.
 
 Python 2/3
 ----------

@@ -30,19 +30,19 @@ class CwaEventDescription(object):
         """Type of the Location, Optional
 
         one of
-        - cwa.lowlevel.LOCATION_TYPE_UNSPECIFIED = 0
-        - cwa.lowlevel.LOCATION_TYPE_PERMANENT_OTHER = 1
-        - cwa.lowlevel.LOCATION_TYPE_TEMPORARY_OTHER = 2
-        - cwa.lowlevel.LOCATION_TYPE_PERMANENT_RETAIL = 3
-        - cwa.lowlevel.LOCATION_TYPE_PERMANENT_FOOD_SERVICE = 4
-        - cwa.lowlevel.LOCATION_TYPE_PERMANENT_CRAFT = 5
-        - cwa.lowlevel.LOCATION_TYPE_PERMANENT_WORKPLACE = 6
-        - cwa.lowlevel.LOCATION_TYPE_PERMANENT_EDUCATIONAL_INSTITUTION = 7
-        - cwa.lowlevel.LOCATION_TYPE_PERMANENT_PUBLIC_BUILDING = 8
-        - cwa.lowlevel.LOCATION_TYPE_TEMPORARY_CULTURAL_EVENT = 9
-        - cwa.lowlevel.LOCATION_TYPE_TEMPORARY_CLUB_ACTIVITY = 10
-        - cwa.lowlevel.LOCATION_TYPE_TEMPORARY_PRIVATE_EVENT = 11
-        - cwa.lowlevel.LOCATION_TYPE_TEMPORARY_WORSHIP_SERVICE = 12
+        - cwa_qr.lowlevel.LOCATION_TYPE_UNSPECIFIED = 0
+        - cwa_qr.lowlevel.LOCATION_TYPE_PERMANENT_OTHER = 1
+        - cwa_qr.lowlevel.LOCATION_TYPE_TEMPORARY_OTHER = 2
+        - cwa_qr.lowlevel.LOCATION_TYPE_PERMANENT_RETAIL = 3
+        - cwa_qr.lowlevel.LOCATION_TYPE_PERMANENT_FOOD_SERVICE = 4
+        - cwa_qr.lowlevel.LOCATION_TYPE_PERMANENT_CRAFT = 5
+        - cwa_qr.lowlevel.LOCATION_TYPE_PERMANENT_WORKPLACE = 6
+        - cwa_qr.lowlevel.LOCATION_TYPE_PERMANENT_EDUCATIONAL_INSTITUTION = 7
+        - cwa_qr.lowlevel.LOCATION_TYPE_PERMANENT_PUBLIC_BUILDING = 8
+        - cwa_qr.lowlevel.LOCATION_TYPE_TEMPORARY_CULTURAL_EVENT = 9
+        - cwa_qr.lowlevel.LOCATION_TYPE_TEMPORARY_CLUB_ACTIVITY = 10
+        - cwa_qr.lowlevel.LOCATION_TYPE_TEMPORARY_PRIVATE_EVENT = 11
+        - cwa_qr.lowlevel.LOCATION_TYPE_TEMPORARY_WORSHIP_SERVICE = 12
         """
         self.location_type: Optional[int] = None
 
