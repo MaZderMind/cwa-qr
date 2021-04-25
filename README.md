@@ -26,19 +26,19 @@ import cwa
 import qrcode.image.svg
 
 # Construct Event-Descriptor
-eventDescription = cwa.CwaEventDescription()
-eventDescription.location_description = 'Zuhause'
-eventDescription.location_address = 'Gau-Odernheim'
-eventDescription.start_date_time = datetime.now(timezone.utc)
-eventDescription.end_date_time = datetime.now(timezone.utc) + timedelta(days=2)
-eventDescription.location_type = cwa.lowlevel.LOCATION_TYPE_PERMANENT_WORKPLACE
-eventDescription.default_check_in_length_in_minutes = 4 * 60
+event_description = cwa.CwaEventDescription()
+event_description.location_description = 'Zuhause'
+event_description.location_address = 'Gau-Odernheim'
+event_description.start_date_time = datetime.now(timezone.utc)
+event_description.end_date_time = datetime.now(timezone.utc) + timedelta(days=2)
+event_description.location_type = cwa.lowlevel.LOCATION_TYPE_PERMANENT_WORKPLACE
+event_description.default_check_in_length_in_minutes = 4 * 60
 
 # Renew QR-Code every night at 4:00
-eventDescription.seed = cwa.rollover_date(datetime.now(), time(4, 0))
+event_description.seed = cwa.rollover_date(datetime.now(), time(4, 0))
 
 # Generate QR-Code
-qr = cwa.generate_qr_code(eventDescription)
+qr = cwa.generate_qr_code(event_description)
 
 # Render QR-Code to PNG-File
 img = qr.make_image(fill_color="black", back_color="white")
@@ -62,11 +62,11 @@ print(len(svg_bytes.getvalue()), " bytes of svg")
 
 CwaEventDescription
 -------------------
-- `locationDescription`: Description of the Location, Optional, String, max 100 Characters
-- `locationAddress`: Address of the Location, Optional, String, max 100 Characters
-- `startDateTime`: Start of the Event, Optional, datetime in UTC
-- `endDateTime`: End of the Event, Optional, datetime in UTC
-- `locationType`: Type of the Location, Optional, one of
+- `location_description`: Description of the Location, Optional, String, max 100 Characters
+- `location_address`: Address of the Location, Optional, String, max 100 Characters
+- `start_date_time`: Start of the Event, Optional, datetime in UTC
+- `end_date_time`: End of the Event, Optional, datetime in UTC
+- `location_type`: Type of the Location, Optional, one of
 	- `cwa.lowlevel.LOCATION_TYPE_UNSPECIFIED` = 0
 	- `cwa.lowlevel.LOCATION_TYPE_PERMANENT_OTHER` = 1
 	- `cwa.lowlevel.LOCATION_TYPE_TEMPORARY_OTHER` = 2
@@ -80,7 +80,7 @@ CwaEventDescription
 	- `cwa.lowlevel.LOCATION_TYPE_TEMPORARY_CLUB_ACTIVITY `= 10
 	- `cwa.lowlevel.LOCATION_TYPE_TEMPORARY_PRIVATE_EVENT `= 11
 	- `cwa.lowlevel.LOCATION_TYPE_TEMPORARY_WORSHIP_SERVICE `= 12
-- `defaultCheckInLengthInMinutes`: Default Check-out time in minutes, Optional
+- `default_check_in_length_in_minutes`: Default Check-out time in minutes, Optional
 - `seed`: Seed to rotate the QR-Code, Optional, `[str, bytes, int, float, date, datetime]` or `None` (Default).
   **Use with caution & read below!** If unsure, leave blank.
 
@@ -121,10 +121,10 @@ from datetime import datetime, time
 import cwa
 
 # Construct Event-Descriptor
-eventDescription = cwa.CwaEventDescription()
+event_description = cwa.CwaEventDescription()
 # …
-seedDate = cwa.rollover_date(datetime.now(), time(4, 0))
-eventDescription.seed = "Some Secret" + str(seedDate)
+seed_date = cwa.rollover_date(datetime.now(), time(4, 0))
+event_description.seed = "Some Secret" + str(seed_date)
 ```
 
 this will keep the date-based seed until 4:00 am on the next day and only then roll over to the next day.
