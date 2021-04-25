@@ -20,7 +20,7 @@ Use as follows:
 #!/usr/bin/env python3
 
 import io
-from datetime import datetime, time, timedelta, timezone
+from datetime import datetime, time, timezone
 
 import cwa_qr
 import qrcode.image.svg
@@ -29,8 +29,8 @@ import qrcode.image.svg
 event_description = cwa_qr.CwaEventDescription()
 event_description.location_description = 'Zuhause'
 event_description.location_address = 'Gau-Odernheim'
-event_description.start_date_time = datetime.now(timezone.utc)
-event_description.end_date_time = datetime.now(timezone.utc) + timedelta(days=2)
+event_description.start_date_time = datetime(2021, 4, 25, 8, 0).astimezone(timezone.utc)
+event_description.end_date_time = datetime(2021, 4, 25, 18, 0).astimezone(timezone.utc)
 event_description.location_type = cwa_qr.lowlevel.LOCATION_TYPE_PERMANENT_WORKPLACE
 event_description.default_check_in_length_in_minutes = 4 * 60
 
@@ -66,6 +66,9 @@ CwaEventDescription
 - `location_address`: Address of the Location, Optional, String, max 100 Characters
 - `start_date_time`: Start of the Event, Optional, datetime in UTC
 - `end_date_time`: End of the Event, Optional, datetime in UTC
+  **Caution**, QR-Codes generated with different start/end times will have different Event-IDs and not warn users that
+  have checked in with the other Code. **Do not use `datetime.now()`** for start/end-date. For repeating Events use
+  `cwa_qr.rollover_date` to get a defined rollover.
 - `location_type`: Type of the Location, Optional, one of
 	- `cwa.lowlevel.LOCATION_TYPE_UNSPECIFIED` = 0
 	- `cwa.lowlevel.LOCATION_TYPE_PERMANENT_OTHER` = 1

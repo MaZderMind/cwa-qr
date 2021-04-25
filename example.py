@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-from datetime import datetime, time, timedelta, timezone
+from datetime import datetime, time, timezone
 
 import cwa_qr
 
@@ -8,8 +8,8 @@ import cwa_qr
 event_description = cwa_qr.CwaEventDescription()
 event_description.location_description = 'Zuhause'
 event_description.location_address = 'Gau-Odernheim'
-event_description.start_date_time = datetime.now(timezone.utc)
-event_description.end_date_time = datetime.now(timezone.utc) + timedelta(days=2)
+event_description.start_date_time = datetime(2021, 4, 25, 8, 0).astimezone(timezone.utc)
+event_description.end_date_time = datetime(2021, 4, 25, 18, 0).astimezone(timezone.utc)
 event_description.location_type = cwa_qr.lowlevel.LOCATION_TYPE_PERMANENT_WORKPLACE
 event_description.default_check_in_length_in_minutes = 4 * 60
 
