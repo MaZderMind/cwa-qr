@@ -2,28 +2,28 @@
 
 from datetime import datetime, time, timedelta, timezone
 
-import cwa
+import cwa_qr
 
 # Construct Event-Descriptor
-eventDescription = cwa.CwaEventDescription()
-eventDescription.locationDescription = 'Zuhause'
-eventDescription.locationAddress = 'Gau-Odernheim'
-eventDescription.startDateTime = datetime.now(timezone.utc)
-eventDescription.endDateTime = datetime.now(timezone.utc) + timedelta(days=2)
-eventDescription.locationType = cwa.lowlevel.LOCATION_TYPE_PERMANENT_WORKPLACE
-eventDescription.defaultCheckInLengthInMinutes = 4 * 60
+event_description = cwa_qr.CwaEventDescription()
+event_description.location_description = 'Zuhause'
+event_description.location_address = 'Gau-Odernheim'
+event_description.start_date_time = datetime.now(timezone.utc)
+event_description.end_date_time = datetime.now(timezone.utc) + timedelta(days=2)
+event_description.location_type = cwa_qr.lowlevel.LOCATION_TYPE_PERMANENT_WORKPLACE
+event_description.default_check_in_length_in_minutes = 4 * 60
 
 # Renew QR-Code every night at 4:00
-seedDate = eventDescription.seed = cwa.rolloverDate(datetime.now(), time(4, 0))
+seedDate = event_description.seed = cwa_qr.rollover_date(datetime.now(), time(4, 0))
 print("seedDate", seedDate)
-eventDescription.seed = "Some Secret" + str(seedDate)
+event_description.seed = "Some Secret" + str(seedDate)
 
 # Generate URL for Debugging purpose
-url = cwa.generateUrl(eventDescription)
+url = cwa_qr.generate_url(event_description)
 print('url', url)
 
 # Generate QR-Code
-qr = cwa.generateQrCode(eventDescription)
+qr = cwa_qr.generate_qr_code(event_description)
 
 img = qr.make_image(fill_color="black", back_color="white")
 img.save('example.png')

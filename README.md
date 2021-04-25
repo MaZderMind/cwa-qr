@@ -15,29 +15,30 @@ Usage
 The Library is not yet packaged as pip and so cwa-directory should be copied over to your project manually.
 
 Use as follows:
+
 ```py
 #!/usr/bin/env python3
 
 import io
 from datetime import datetime, time, timedelta, timezone
 
-import cwa
+import cwa_qr
 import qrcode.image.svg
 
 # Construct Event-Descriptor
-eventDescription = cwa.CwaEventDescription()
-eventDescription.locationDescription = 'Zuhause'
-eventDescription.locationAddress = 'Gau-Odernheim'
-eventDescription.startDateTime = datetime.now(timezone.utc)
-eventDescription.endDateTime = datetime.now(timezone.utc) + timedelta(days=2)
-eventDescription.locationType = cwa.lowlevel.LOCATION_TYPE_PERMANENT_WORKPLACE
-eventDescription.defaultCheckInLengthInMinutes = 4 * 60
+event_description = cwa_qr.CwaEventDescription()
+event_description.location_description = 'Zuhause'
+event_description.location_address = 'Gau-Odernheim'
+event_description.start_date_time = datetime.now(timezone.utc)
+event_description.end_date_time = datetime.now(timezone.utc) + timedelta(days=2)
+event_description.location_type = cwa_qr.lowlevel.LOCATION_TYPE_PERMANENT_WORKPLACE
+event_description.default_check_in_length_in_minutes = 4 * 60
 
 # Renew QR-Code every night at 4:00
-eventDescription.seed = cwa.rolloverDate(datetime.now(), time(4, 0))
+event_description.seed = cwa_qr.rollover_date(datetime.now(), time(4, 0))
 
 # Generate QR-Code
-qr = cwa.generateQrCode(eventDescription)
+qr = cwa_qr.generate_qr_code(event_description)
 
 # Render QR-Code to PNG-File
 img = qr.make_image(fill_color="black", back_color="white")
@@ -48,7 +49,6 @@ print("generated example.png")
 img_bytes = io.BytesIO()
 img.save(img_bytes)
 print(len(img_bytes.getvalue()), " bytes of png")
-
 
 # Render QR-Code to SVG-File
 svg = qr.make_image(image_factory=qrcode.image.svg.SvgPathFillImage)
@@ -62,11 +62,11 @@ print(len(svg_bytes.getvalue()), " bytes of svg")
 
 CwaEventDescription
 -------------------
-- `locationDescription`: Description of the Location, Optional, String, max 100 Characters
-- `locationAddress`: Address of the Location, Optional, String, max 100 Characters
-- `startDateTime`: Start of the Event, Optional, datetime in UTC
-- `endDateTime`: End of the Event, Optional, datetime in UTC
-- `locationType`: Type of the Location, Optional, one of
+- `location_description`: Description of the Location, Optional, String, max 100 Characters
+- `location_address`: Address of the Location, Optional, String, max 100 Characters
+- `start_date_time`: Start of the Event, Optional, datetime in UTC
+- `end_date_time`: End of the Event, Optional, datetime in UTC
+- `location_type`: Type of the Location, Optional, one of
 	- `cwa.lowlevel.LOCATION_TYPE_UNSPECIFIED` = 0
 	- `cwa.lowlevel.LOCATION_TYPE_PERMANENT_OTHER` = 1
 	- `cwa.lowlevel.LOCATION_TYPE_TEMPORARY_OTHER` = 2
@@ -80,7 +80,7 @@ CwaEventDescription
 	- `cwa.lowlevel.LOCATION_TYPE_TEMPORARY_CLUB_ACTIVITY `= 10
 	- `cwa.lowlevel.LOCATION_TYPE_TEMPORARY_PRIVATE_EVENT `= 11
 	- `cwa.lowlevel.LOCATION_TYPE_TEMPORARY_WORSHIP_SERVICE `= 12
-- `defaultCheckInLengthInMinutes`: Default Check-out time in minutes, Optional
+- `default_check_in_length_in_minutes`: Default Check-out time in minutes, Optional
 - `seed`: Seed to rotate the QR-Code, Optional, `[str, bytes, int, float, date, datetime]` or `None` (Default).
   **Use with caution & read below!** If unsure, leave blank.
 
@@ -118,17 +118,17 @@ The Secret *must stay constant* over time, or the resulting QR-Codes will not co
 import io
 from datetime import datetime, time
 
-import cwa
+import cwa_qr
 
 # Construct Event-Descriptor
-eventDescription = cwa.CwaEventDescription()
+event_description = cwa_qr.CwaEventDescription()
 # …
-seedDate = cwa.rolloverDate(datetime.now(), time(4, 0))
-eventDescription.seed = "Some Secret" + str(seedDate)
+seed_date = cwa_qr.rollover_date(datetime.now(), time(4, 0))
+event_description.seed = "Some Secret" + str(seed_date)
 ```
 
 this will keep the date-based seed until 4:00 am on the next day and only then roll over to the next day.
-See [test_rollover.py](cwa/test_rollover.py) for an in-depth look at the rollover code.
+See [test_rollover.py](cwa_qr/test_rollover.py) for an in-depth look at the rollover code.
 
 Python 2/3
 ----------
