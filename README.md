@@ -1,6 +1,9 @@
 Python implementation of the Corona-Warn-App (CWA) Event Registration
 ===================================================================
 
+[![GitHub](https://img.shields.io/github/license/MaZderMind/cwa-qr)](https://github.com/MaZderMind/cwa-qr/blob/main/LICENSE.txt)
+[![PyPI](https://img.shields.io/pypi/v/cwa-qr)](https://pypi.org/project/cwa-qr/)
+
 This is an implementation of the Protocol used to generate event and location QR codes for the Corona-Warn-App (CWA) as described in [
 Corona-Warn-App: Documentation – Event Registration - Summary](https://github.com/corona-warn-app/cwa-documentation/blob/master/event_registration.md).
 
@@ -12,8 +15,6 @@ The Interface described in the Document is implemented, the undocumented pieces 
 
 Usage
 -----
-The Library is not yet packaged as pip and so cwa-directory should be copied over to your project manually.
-
 Use as follows:
 
 ```py
