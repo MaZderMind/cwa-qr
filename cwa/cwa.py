@@ -49,7 +49,10 @@ class CwaEventDescription(object):
         """Default Checkout-Time im Minutes, Optional"""
         self.defaultCheckInLengthInMinutes: Optional[int] = None
 
-        """Specific Seed, Optional"""
+        """Seed to rotate the QR-Code, Optional, [str, bytes, int, float, date, datetime] or None (Default)
+
+        Use with caution & read the Section about *Rotating QR-Codes* in the README first! If unsure, leave blank.
+        """
         self.seed: Union[str, bytes, int, float, date, datetime, None] = None
 
 

@@ -81,7 +81,50 @@ CwaEventDescription
 	- `cwa.lowlevel.LOCATION_TYPE_TEMPORARY_PRIVATE_EVENT `= 11
 	- `cwa.lowlevel.LOCATION_TYPE_TEMPORARY_WORSHIP_SERVICE `= 12
 - `defaultCheckInLengthInMinutes`: Default Check-out time in minutes, Optional
-- `randomSeed`: Specific Seed
+- `seed`: Seed to rotate the QR-Code, Optional, `[str, bytes, int, float, date, datetime]` or `None` (Default).
+  **Use with caution & read below!** If unsure, leave blank.
+
+Rotating QR-Codes
+-----------------
+From the [Documentation](https://github.com/corona-warn-app/cwa-documentation/blob/master/event_registration.md):
+> Profiling of Venues
+>
+> An adversary can collect this information for a single venue by scanning the QR code and extracting and storing the
+> data. To mitigate the risk, CWA encourages owners to regularly generate new QR codes for their venues. The more
+> frequent QR codes are updated, the more difficult it is to keep a central database with venue data up-to-date.
+> **However**, a new QR code should only be generated **when no visitor is at the event or location**, because
+> visitors can only warn each other **with the same QR code**.
+
+From an Application-Developers point of view, special care must be taken to decide if and when QR codes should be
+changed. A naive approach, i.e. changing the QR-Code every 5 Minutes, would render the complete Warning-Chain totally
+useless **without anyone noticing**. Therefore, the Default of this Library as of 2021/04/26 is to **not seed the
+QR-Codes with random values**. This results in every QR-Code being generated without an explicit Seed to be identical,
+which minimizes the Risk of having QR-Codes that do not warn users as expected at the increased risk of profiling of
+Venues.
+
+As an Application-Developer you are encouraged to **ask you user if and when they want their QR-Codes to change** and
+explain to them that they should only rotate their Codes **when they are sure that nobody is at the location or in the
+venue** for at least 30 Minutes, to allow airborne particles to settle or get filtered out. Do **not make assumptions**
+regarding a good time to rotate QR-Codes (i.e. always at 4:00 am) because they will fail so warn people in some
+important Situations (nightclubs, hotels, night-shift working) **without anyone noticing**.
+
+To disable rotation of QR-Codes, specify None as the Seed (Default behaviour). This Library gives you a utility to allow
+rotating QR-Codes at a time of day specified by your user:
+
+```py
+import io
+from datetime import datetime, time
+
+import cwa
+
+# Construct Event-Descriptor
+eventDescription = cwa.CwaEventDescription()
+# …
+eventDescription.seed = cwa.rolloverDate(datetime.now(), time(4, 0))
+```
+
+this will keep the date-based seed until 4:00 am on the next day and only then roll over to the next day.
+See [test_rollover.py](cwa/test_rollover.py) for an in-depth look at the rollover code.
 
 Python 2/3
 ----------
