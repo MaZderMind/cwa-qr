@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, date
 
 from . import seed
 
@@ -24,6 +24,10 @@ def test_accepts_str_seed():
 
 def test_accepts_datetime_seed():
     assert_seed(datetime(2021, 4, 21, 10, 0))
+
+
+def test_accepts_date_seed():
+    assert_seed(date(2021, 4, 21))
 
 
 def test_accepts_bytes_seed():
