@@ -96,7 +96,7 @@ From the [Documentation](https://github.com/corona-warn-app/cwa-documentation/bl
 > visitors can only warn each other **with the same QR code**.
 
 From an Application-Developers point of view, special care must be taken to decide if and when QR codes should be
-changed. A naive approach, i.e. changing the QR-Code every 5 Minutes, would render the complete Warning-Chain totally
+changed. A naive approach, i.e. changing the QR-Code on every call, would render the complete Warning-Chain totally
 useless **without anyone noticing**. Therefore, the Default of this Library as of 2021/04/26 is to **not seed the
 QR-Codes with random values**. This results in every QR-Code being generated without an explicit Seed to be identical,
 which minimizes the Risk of having QR-Codes that do not warn users as expected at the increased risk of profiling of
