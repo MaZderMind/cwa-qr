@@ -2,7 +2,7 @@ import base64
 from typing import Optional, Union
 
 import qrcode
-from datetime import datetime
+from datetime import datetime, date
 
 from . import cwa_pb2 as lowlevel
 from . import seed
@@ -50,7 +50,7 @@ class CwaEventDescription(object):
         self.defaultCheckInLengthInMinutes: Optional[int] = None
 
         """Specific Seed, Optional"""
-        self.seed: Union[str, bytes, int, float, datetime, None] = None
+        self.seed: Union[str, bytes, int, float, date, datetime, None] = None
 
 
 def generatePayload(eventDescription: CwaEventDescription) -> lowlevel.QRCodePayload:

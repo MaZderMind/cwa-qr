@@ -1,13 +1,11 @@
 import random
-from datetime import datetime
-from typing import Union
 
 
-def constructSeed(seed: Union[str, bytes, int, float, datetime, None]) -> bytes:
+def constructSeed(seed) -> bytes:
     if seed is None:
         seed = b''
 
-    elif isinstance(seed, datetime):
+    if type(seed) not in [int, float, str, bytes]:
         seed = str(seed)
 
     r = random.Random()
