@@ -15,6 +15,7 @@ Usage
 The Library is not yet packaged as pip and so cwa-directory should be copied over to your project manually.
 
 Use as follows:
+
 ```py
 #!/usr/bin/env python3
 
@@ -26,18 +27,18 @@ import qrcode.image.svg
 
 # Construct Event-Descriptor
 eventDescription = cwa.CwaEventDescription()
-eventDescription.locationDescription = 'Zuhause'
-eventDescription.locationAddress = 'Gau-Odernheim'
-eventDescription.startDateTime = datetime.now(timezone.utc)
-eventDescription.endDateTime = datetime.now(timezone.utc) + timedelta(days=2)
-eventDescription.locationType = cwa.lowlevel.LOCATION_TYPE_PERMANENT_WORKPLACE
-eventDescription.defaultCheckInLengthInMinutes = 4 * 60
+eventDescription.location_description = 'Zuhause'
+eventDescription.location_address = 'Gau-Odernheim'
+eventDescription.start_date_time = datetime.now(timezone.utc)
+eventDescription.end_date_time = datetime.now(timezone.utc) + timedelta(days=2)
+eventDescription.location_type = cwa.lowlevel.LOCATION_TYPE_PERMANENT_WORKPLACE
+eventDescription.default_check_in_length_in_minutes = 4 * 60
 
 # Renew QR-Code every night at 4:00
-eventDescription.seed = cwa.rolloverDate(datetime.now(), time(4, 0))
+eventDescription.seed = cwa.rollover_date(datetime.now(), time(4, 0))
 
 # Generate QR-Code
-qr = cwa.generateQrCode(eventDescription)
+qr = cwa.generate_qr_code(eventDescription)
 
 # Render QR-Code to PNG-File
 img = qr.make_image(fill_color="black", back_color="white")
@@ -48,7 +49,6 @@ print("generated example.png")
 img_bytes = io.BytesIO()
 img.save(img_bytes)
 print(len(img_bytes.getvalue()), " bytes of png")
-
 
 # Render QR-Code to SVG-File
 svg = qr.make_image(image_factory=qrcode.image.svg.SvgPathFillImage)
@@ -123,7 +123,7 @@ import cwa
 # Construct Event-Descriptor
 eventDescription = cwa.CwaEventDescription()
 # …
-seedDate = cwa.rolloverDate(datetime.now(), time(4, 0))
+seedDate = cwa.rollover_date(datetime.now(), time(4, 0))
 eventDescription.seed = "Some Secret" + str(seedDate)
 ```
 

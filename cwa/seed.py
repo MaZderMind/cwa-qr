@@ -1,7 +1,7 @@
 import random
 
 
-def constructSeed(seed) -> bytes:
+def construct_seed(seed) -> bytes:
     if seed is None:
         seed = b''
 

@@ -16,16 +16,16 @@ PUBLIC_KEY = base64.standard_b64decode(PUBLIC_KEY_STR.encode('ascii'))
 class CwaEventDescription(object):
     def __init__(self):
         """Description of the Location, Required, String, max 100 Characters"""
-        self.locationDescription: Optional[str] = None
+        self.location_description: Optional[str] = None
 
         """Address of the Location, Required, String, max 100 Characters"""
-        self.locationAddress: Optional[str] = None
+        self.location_address: Optional[str] = None
 
         """Start of the Event, Optional, datetime in UTC"""
-        self.startDateTime: Optional[datetime] = None
+        self.start_date_time: Optional[datetime] = None
 
         """End of the Event, Optional, datetime in UTC"""
-        self.endDateTime: Optional[datetime] = None
+        self.end_date_time: Optional[datetime] = None
 
         """Type of the Location, Optional
 
@@ -44,10 +44,10 @@ class CwaEventDescription(object):
         - cwa.lowlevel.LOCATION_TYPE_TEMPORARY_PRIVATE_EVENT = 11
         - cwa.lowlevel.LOCATION_TYPE_TEMPORARY_WORSHIP_SERVICE = 12
         """
-        self.locationType: Optional[int] = None
+        self.location_type: Optional[int] = None
 
         """Default Checkout-Time im Minutes, Optional"""
-        self.defaultCheckInLengthInMinutes: Optional[int] = None
+        self.default_check_in_length_in_minutes: Optional[int] = None
 
         """Seed to rotate the QR-Code, Optional, [str, bytes, int, float, date, datetime] or None (Default)
 
@@ -56,35 +56,35 @@ class CwaEventDescription(object):
         self.seed: Union[str, bytes, int, float, date, datetime, None] = None
 
 
-def generatePayload(eventDescription: CwaEventDescription) -> lowlevel.QRCodePayload:
+def generate_payload(event_description: CwaEventDescription) -> lowlevel.QRCodePayload:
     payload = lowlevel.QRCodePayload()
     payload.version = 1
 
     payload.locationData.version = 1
-    payload.locationData.description = eventDescription.locationDescription
-    payload.locationData.address = eventDescription.locationAddress
-    payload.locationData.startTimestamp = int(eventDescription.startDateTime.timestamp()) if \
-        eventDescription.startDateTime else 0
-    payload.locationData.endTimestamp = int(eventDescription.endDateTime.timestamp()) if \
-        eventDescription.endDateTime else 0
+    payload.locationData.description = event_description.location_description
+    payload.locationData.address = event_description.location_address
+    payload.locationData.startTimestamp = int(event_description.start_date_time.timestamp()) if \
+        event_description.start_date_time else 0
+    payload.locationData.endTimestamp = int(event_description.end_date_time.timestamp()) if \
+        event_description.end_date_time else 0
 
     payload.crowdNotifierData.version = 1
     payload.crowdNotifierData.publicKey = PUBLIC_KEY
-    payload.crowdNotifierData.cryptographicSeed = seed.constructSeed(eventDescription.seed)
+    payload.crowdNotifierData.cryptographicSeed = seed.construct_seed(event_description.seed)
 
-    cwaLocationData = lowlevel.CWALocationData()
-    cwaLocationData.version = 1
-    cwaLocationData.type = eventDescription.locationType if \
-        eventDescription.locationType is not None else lowlevel.LOCATION_TYPE_UNSPECIFIED
-    cwaLocationData.defaultCheckInLengthInMinutes = eventDescription.defaultCheckInLengthInMinutes if \
-        eventDescription.defaultCheckInLengthInMinutes is not None else 0
+    cwa_location_data = lowlevel.CWALocationData()
+    cwa_location_data.version = 1
+    cwa_location_data.type = event_description.location_type if \
+        event_description.location_type is not None else lowlevel.LOCATION_TYPE_UNSPECIFIED
+    cwa_location_data.defaultCheckInLengthInMinutes = event_description.default_check_in_length_in_minutes if \
+        event_description.default_check_in_length_in_minutes is not None else 0
 
-    payload.countryData = cwaLocationData.SerializeToString()
+    payload.countryData = cwa_location_data.SerializeToString()
     return payload
 
 
-def generateUrl(eventDescription: CwaEventDescription) -> str:
-    payload = generatePayload(eventDescription)
+def generate_url(event_description: CwaEventDescription) -> str:
+    payload = generate_payload(event_description)
     serialized = payload.SerializeToString()
     encoded = base64.urlsafe_b64encode(serialized)
     url = 'https://e.coronawarn.app?v=1#' + encoded.decode('ascii')
@@ -92,9 +92,9 @@ def generateUrl(eventDescription: CwaEventDescription) -> str:
     return url
 
 
-def generateQrCode(eventDescription: CwaEventDescription) -> qrcode.QRCode:
+def generate_qr_code(event_description: CwaEventDescription) -> qrcode.QRCode:
     qr = qrcode.QRCode()
-    qr.add_data(generateUrl(eventDescription))
+    qr.add_data(generate_url(event_description))
     qr.make(fit=True)
 
     return qr
