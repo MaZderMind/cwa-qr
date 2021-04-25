@@ -14,9 +14,9 @@ eventDescription.locationType = cwa.lowlevel.LOCATION_TYPE_PERMANENT_WORKPLACE
 eventDescription.defaultCheckInLengthInMinutes = 4 * 60
 
 # Renew QR-Code every night at 4:00
-seed = cwa.rolloverDate(datetime.now(), time(4, 0))
-print("seed", seed)
-eventDescription.seed = seed
+seedDate = eventDescription.seed = cwa.rolloverDate(datetime.now(), time(4, 0))
+print("seedDate", seedDate)
+eventDescription.seed = "Some Secret" + str(seedDate)
 
 # Generate URL for Debugging purpose
 url = cwa.generateUrl(eventDescription)

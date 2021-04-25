@@ -108,8 +108,11 @@ venue** for at least 30 Minutes, to allow airborne particles to settle or get fi
 regarding a good time to rotate QR-Codes (i.e. always at 4:00 am) because they will fail so warn people in some
 important Situations (nightclubs, hotels, night-shift working) **without anyone noticing**.
 
-To disable rotation of QR-Codes, specify None as the Seed (Default behaviour). This Library gives you a utility to allow
-rotating QR-Codes at a time of day specified by your user:
+To disable rotation of QR-Codes, specify None as the Seed (Default behaviour).
+
+The Library also gives you a utility to allow rotating QR-Codes at a given time of the day. Please make
+sure to also integrate some kind of Secret into the seed, to prevent an adversary from calculating  future QR-Codes.
+The Secret *must stay constant* over time, or the resulting QR-Codes will not correctly trigger warnings.
 
 ```py
 import io
@@ -120,7 +123,8 @@ import cwa
 # Construct Event-Descriptor
 eventDescription = cwa.CwaEventDescription()
 # …
-eventDescription.seed = cwa.rolloverDate(datetime.now(), time(4, 0))
+seedDate = cwa.rolloverDate(datetime.now(), time(4, 0))
+eventDescription.seed = "Some Secret" + str(seedDate)
 ```
 
 this will keep the date-based seed until 4:00 am on the next day and only then roll over to the next day.
