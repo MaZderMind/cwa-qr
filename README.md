@@ -21,7 +21,7 @@ Use as follows:
 import io
 from datetime import datetime, time, timedelta, timezone
 
-from cwa import cwa, rollover
+import cwa
 import qrcode.image.svg
 
 # Construct Event-Descriptor
@@ -34,7 +34,7 @@ eventDescription.locationType = cwa.lowlevel.LOCATION_TYPE_PERMANENT_WORKPLACE
 eventDescription.defaultCheckInLengthInMinutes = 4 * 60
 
 # Renew QR-Code every night at 4:00
-eventDescription.seed = rollover.rolloverDate(datetime.now(), time(4, 0))
+eventDescription.seed = cwa.rolloverDate(datetime.now(), time(4, 0))
 
 # Generate QR-Code
 qr = cwa.generateQrCode(eventDescription)

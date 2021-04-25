@@ -2,7 +2,7 @@
 
 from datetime import datetime, time, timedelta, timezone
 
-from cwa import cwa, rollover
+import cwa
 
 # Construct Event-Descriptor
 eventDescription = cwa.CwaEventDescription()
@@ -14,7 +14,7 @@ eventDescription.locationType = cwa.lowlevel.LOCATION_TYPE_PERMANENT_WORKPLACE
 eventDescription.defaultCheckInLengthInMinutes = 4 * 60
 
 # Renew QR-Code every night at 4:00
-seed = rollover.rolloverDate(datetime.now(), time(4, 0))
+seed = cwa.rolloverDate(datetime.now(), time(4, 0))
 print("seed", seed)
 eventDescription.seed = seed
 
