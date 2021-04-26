@@ -1,8 +1,11 @@
 import base64
+import io
+import os
+from datetime import date, datetime
 from typing import Optional, Union
 
 import qrcode
-from datetime import datetime, date
+from svgutils import transform as svgut
 
 from . import cwa_pb2 as lowlevel
 from . import seed
@@ -56,6 +59,26 @@ class CwaEventDescription(object):
         self.seed: Union[str, bytes, int, float, date, datetime, None] = None
 
 
+class CwaPoster(object):
+    POSTER_PORTRAIT = 'portrait'
+    POSTER_LANDSCAPE = 'landscape'
+
+    TRANSLATIONS = {
+        POSTER_PORTRAIT: {
+            'file': 'poster_portrait.svg',
+            'x': 80,
+            'y': 60,
+            'scale': 6
+        },
+        POSTER_LANDSCAPE: {
+            'file': 'poster_landscape.svg',
+            'x': 42,
+            'y': 120,
+            'scale': 4.8
+        }
+    }
+
+
 def generate_payload(event_description: CwaEventDescription) -> lowlevel.QRCodePayload:
     payload = lowlevel.QRCodePayload()
     payload.version = 1
@@ -98,3 +121,23 @@ def generate_qr_code(event_description: CwaEventDescription) -> qrcode.QRCode:
     qr.make(fit=True)
 
     return qr
+
+
+def generate_poster(event_description: CwaEventDescription, template: CwaPoster) -> svgut.SVGFigure:
+    qr = generate_qr_code(event_description)
+    svg = qr.make_image(image_factory=qrcode.image.svg.SvgPathImage)
+    svg_bytes = io.BytesIO()
+    svg.save(svg_bytes)
+
+    poster = svgut.fromfile('{}/{}'.format(
+        os.path.dirname(os.path.abspath(__file__)),
+        CwaPoster.TRANSLATIONS[template]['file']
+    ))
+    overlay = svgut.fromstring(svg_bytes.getvalue().decode('UTF-8')).getroot()
+    overlay.moveto(
+        CwaPoster.TRANSLATIONS[template]['x'],
+        CwaPoster.TRANSLATIONS[template]['y'],
+        CwaPoster.TRANSLATIONS[template]['scale']
+    )
+    poster.append([overlay])
+    return poster
