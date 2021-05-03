@@ -1,7 +1,7 @@
 import io
 import os
 
-from svgutils import transform as svgut
+from svgutils import transform as svg_utils
 import qrcode.image.svg
 
 from cwa_qr import generate_qr_code, CwaEventDescription
@@ -27,17 +27,17 @@ class CwaPoster(object):
     }
 
 
-def generate_poster(event_description: CwaEventDescription, template: CwaPoster) -> svgut.SVGFigure:
+def generate_poster(event_description: CwaEventDescription, template: CwaPoster) -> svg_utils.SVGFigure:
     qr = generate_qr_code(event_description)
     svg = qr.make_image(image_factory=qrcode.image.svg.SvgPathImage)
     svg_bytes = io.BytesIO()
     svg.save(svg_bytes)
 
-    poster = svgut.fromfile('{}/{}'.format(
+    poster = svg_utils.fromfile('{}/{}'.format(
         os.path.dirname(os.path.abspath(__file__)),
         CwaPoster.TRANSLATIONS[template]['file']
     ))
-    overlay = svgut.fromstring(svg_bytes.getvalue().decode('UTF-8')).getroot()
+    overlay = svg_utils.fromstring(svg_bytes.getvalue().decode('UTF-8')).getroot()
     overlay.moveto(
         CwaPoster.TRANSLATIONS[template]['x'],
         CwaPoster.TRANSLATIONS[template]['y'],
