@@ -29,6 +29,11 @@ img = qr.make_image(fill_color="black", back_color="white")
 img.save('example.png')
 print("generated example.png")
 
+poster = cwa_qr.generate_poster(event_description, cwa_qr.CwaPoster.POSTER_PORTRAIT)
+poster.save('poster.svg')
+print("generated poster.svg")
+
+
 # import io
 # img_bytes = io.BytesIO()
 # img.save(img_bytes)
