@@ -34,5 +34,15 @@ def test_accepts_bytes_seed():
     assert_seed(b'\xDE\xAD\xBE\xEF')
 
 
+def test_kees_bytes_seed_if_it_is_already_16_bytes_long():
+    input_value = b'\xDE\xAD\xBE\xEF' \
+                  b'\xDE\xAD\xBE\xEF' \
+                  b'\xDE\xAD\xBE\xEF' \
+                  b'\xDE\xAD\xBE\xEF'
+    print(len(input_value))
+    generated_seed = seed.construct_seed(input_value)
+    assert generated_seed == input_value
+
+
 def test_accepts_none_seed():
     assert_seed(None)
