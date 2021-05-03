@@ -89,7 +89,7 @@ def generate_url(event_description: CwaEventDescription) -> str:
     encoded = base64.urlsafe_b64encode(serialized)
     url = 'https://e.coronawarn.app?v=1#' + encoded.decode('ascii')
 
-    return url
+    return url.rstrip('=')
 
 
 def generate_qr_code(event_description: CwaEventDescription) -> qrcode.QRCode:

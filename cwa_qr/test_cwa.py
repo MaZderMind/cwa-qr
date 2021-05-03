@@ -88,3 +88,25 @@ def test_generate_qr_code_svg():
     svg.save(svg_bytes)
 
     assert svg_bytes.getvalue().startswith(b'<?xml')
+
+
+def test_matches_code_generated_by_app():
+    from_app = "https://e.coronawarn.app?v=1#" \
+               "CAESJAgBEglLaW5vYWJlbmQaCUltIEtlbGxlciiQ2MCEBjDArMGEBhp2CAESYIMCzMxNed7UMADn9jGaFF1381k3ZUqX0vfYmX35" \
+               "nJsThvZ40iuEU4phThcA4erdE8sPF0dNboA2I7bisI47iuPTofNxVnLel6Xnz4vUpI8b78-d4vYGjJlBHPeqW7aGgBoQ_85sw48P" \
+               "riq3uzwjcOzBdiIHCAEQCRi0AQ"
+
+    e = cwa.CwaEventDescription()
+    e.location_description = 'Kinoabend'
+    e.location_address = 'Im Keller'
+
+    timezone_offset = timezone(timedelta(hours=2))
+    e.start_date_time = datetime(2021, 5, 3, 19, 0, 0, tzinfo=timezone_offset).astimezone(timezone.utc)
+    e.end_date_time = datetime(2021, 5, 3, 22, 0, 0, tzinfo=timezone_offset).astimezone(timezone.utc)
+    e.location_type = cwa.lowlevel.LOCATION_TYPE_TEMPORARY_CULTURAL_EVENT
+    e.default_check_in_length_in_minutes = 3 * 60
+
+    e.seed = b'\xff\xcel\xc3\x8f\x0f\xae*\xb7\xbb<#p\xec\xc1v'
+
+    from_lib = cwa.generate_url(e)
+    assert from_lib == from_app
