@@ -99,8 +99,10 @@ def test_matches_code_generated_by_app():
     e = cwa.CwaEventDescription()
     e.location_description = 'Kinoabend'
     e.location_address = 'Im Keller'
-    e.start_date_time = datetime(2021, 5, 3, 19, 00, 0).astimezone(timezone.utc)
-    e.end_date_time = datetime(2021, 5, 3, 22, 0, 0).astimezone(timezone.utc)
+
+    timezone_offset = timezone(timedelta(hours=2))
+    e.start_date_time = datetime(2021, 5, 3, 19, 0, 0, tzinfo=timezone_offset).astimezone(timezone.utc)
+    e.end_date_time = datetime(2021, 5, 3, 22, 0, 0, tzinfo=timezone_offset).astimezone(timezone.utc)
     e.location_type = cwa.lowlevel.LOCATION_TYPE_TEMPORARY_CULTURAL_EVENT
     e.default_check_in_length_in_minutes = 3 * 60
 
