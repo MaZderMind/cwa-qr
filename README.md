@@ -20,11 +20,9 @@ Use as follows:
 ```py
 #!/usr/bin/env python3
 
-import io
 from datetime import datetime, time, timezone
 
 import cwa_qr
-import qrcode.image.svg
 
 # Construct Event-Descriptor
 event_description = cwa_qr.CwaEventDescription()
@@ -36,30 +34,20 @@ event_description.location_type = cwa_qr.CwaLocation.permanent_workplace
 event_description.default_check_in_length_in_minutes = 4 * 60
 
 # Renew QR-Code every night at 4:00
-event_description.seed = cwa_qr.rollover_date(datetime.now(), time(4, 0))
+seed_date = event_description.seed = cwa_qr.rollover_date(datetime.now(), time(4, 0))
+print("seedDate", seed_date)
+event_description.seed = "Some Secret" + str(seed_date)
 
 # Generate QR-Code
 qr = cwa_qr.generate_qr_code(event_description)
 
-# Render QR-Code to PNG-File
+# Save as PNG
 img = qr.make_image(fill_color="black", back_color="white")
 img.save('example.png')
 print("generated example.png")
-
-# Render QR-Code to PNG BytesIO-Object for further usage
-img_bytes = io.BytesIO()
-img.save(img_bytes)
-print(len(img_bytes.getvalue()), " bytes of png")
-
-# Render QR-Code to SVG-File
-svg = qr.make_image(image_factory=qrcode.image.svg.SvgPathFillImage)
-svg.save('example.svg')
-
-# Render QR-Code to SVG BytesIO-Object for further usage
-svg_bytes = io.BytesIO()
-svg.save(svg_bytes)
-print(len(svg_bytes.getvalue()), " bytes of svg")
 ```
+
+See [example_full.py](example_full.py) for an example using all features.
 
 CwaEventDescription
 -------------------
