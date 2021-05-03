@@ -10,7 +10,7 @@ event_description.location_description = 'Zuhause'
 event_description.location_address = 'Gau-Odernheim'
 event_description.start_date_time = datetime(2021, 4, 25, 8, 0).astimezone(timezone.utc)
 event_description.end_date_time = datetime(2021, 4, 25, 18, 0).astimezone(timezone.utc)
-event_description.location_type = cwa_qr.lowlevel.LOCATION_TYPE_PERMANENT_WORKPLACE
+event_description.location_type = cwa_qr.CwaLocation.permanent_workplace
 event_description.default_check_in_length_in_minutes = 4 * 60
 
 # Renew QR-Code every night at 4:00

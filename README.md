@@ -32,7 +32,7 @@ event_description.location_description = 'Zuhause'
 event_description.location_address = 'Gau-Odernheim'
 event_description.start_date_time = datetime(2021, 4, 25, 8, 0).astimezone(timezone.utc)
 event_description.end_date_time = datetime(2021, 4, 25, 18, 0).astimezone(timezone.utc)
-event_description.location_type = cwa_qr.lowlevel.LOCATION_TYPE_PERMANENT_WORKPLACE
+event_description.location_type = cwa_qr.CwaLocation.permanent_workplace
 event_description.default_check_in_length_in_minutes = 4 * 60
 
 # Renew QR-Code every night at 4:00
@@ -71,19 +71,19 @@ CwaEventDescription
   have checked in with the other Code. **Do not use `datetime.now()`** for start/end-date. For repeating Events use
   `cwa_qr.rollover_date` to get a defined rollover.
 - `location_type`: Type of the Location, Optional, one of
-	- `cwa.lowlevel.LOCATION_TYPE_UNSPECIFIED` = 0
-	- `cwa.lowlevel.LOCATION_TYPE_PERMANENT_OTHER` = 1
-	- `cwa.lowlevel.LOCATION_TYPE_TEMPORARY_OTHER` = 2
-	- `cwa.lowlevel.LOCATION_TYPE_PERMANENT_RETAIL` = 3
-	- `cwa.lowlevel.LOCATION_TYPE_PERMANENT_FOOD_SERVICE` = 4
-	- `cwa.lowlevel.LOCATION_TYPE_PERMANENT_CRAFT` = 5
-	- `cwa.lowlevel.LOCATION_TYPE_PERMANENT_WORKPLACE` = 6
-	- `cwa.lowlevel.LOCATION_TYPE_PERMANENT_EDUCATIONAL_INSTITUTION` = 7
-	- `cwa.lowlevel.LOCATION_TYPE_PERMANENT_PUBLIC_BUILDING` = 8
-	- `cwa.lowlevel.LOCATION_TYPE_TEMPORARY_CULTURAL_EVENT` = 9
-	- `cwa.lowlevel.LOCATION_TYPE_TEMPORARY_CLUB_ACTIVITY `= 10
-	- `cwa.lowlevel.LOCATION_TYPE_TEMPORARY_PRIVATE_EVENT `= 11
-	- `cwa.lowlevel.LOCATION_TYPE_TEMPORARY_WORSHIP_SERVICE `= 12
+  - `cwa.CwaLocation.unspecified`
+  - `cwa.CwaLocation.permanent_other`
+  - `cwa.CwaLocation.temporary_other`
+  - `cwa.CwaLocation.permanent_retail`
+  - `cwa.CwaLocation.permanent_food_service`
+  - `cwa.CwaLocation.permanent_craft`
+  - `cwa.CwaLocation.permanent_workplace`
+  - `cwa.CwaLocation.permanent_educational_institution`
+  - `cwa.CwaLocation.permanent_public_building`
+  - `cwa.CwaLocation.temporary_cultural_event`
+  - `cwa.CwaLocation.temporary_club_activity`
+  - `cwa.CwaLocation.temporary_private_event`
+  - `cwa.CwaLocation.temporary_worship_service`
 - `default_check_in_length_in_minutes`: Default Check-out time in minutes, Optional
 - `seed`: Seed to rotate the QR-Code, Optional, `[str, bytes, int, float, date, datetime]` or `None` (Default).
   **Use with caution & read below!** If unsure, leave blank.
