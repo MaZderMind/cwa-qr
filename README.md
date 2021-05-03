@@ -124,7 +124,7 @@ See [test_rollover.py](cwa_qr/test_rollover.py) for an in-depth look at the roll
 
 Posters
 -------
-his Library has Support for compositing the QR-Code with a Poster, explaining its usage:
+This Library has Support for compositing the QR-Code with a Poster, explaining its usage:
 "Checken Sie ein, stoppen Sie das Virus". The Poster-Functionality works by composing the QR-Code SVG with the
 Poster-SVG and thus only supports SVG-Output. Both Landscape and Portrait-Posters are supported.
 
