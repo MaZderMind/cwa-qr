@@ -53,7 +53,7 @@ poster.save('poster.svg')
 print("generated poster.svg")
 
 # You can use pyrsvg (https://www.cairographics.org/cookbook/pyrsvg/) if you need to convert the poster to a PNG
-# or svglib (https://pypi.org/project/svglib/) to convert them to a PDF.
+# or svglib (https://pypi.org/project/svglib/) to convert it to a PDF.
 
 # Save as Poster-SVG to Buffer for further usage
 poster_svg_bytes = poster.to_str()

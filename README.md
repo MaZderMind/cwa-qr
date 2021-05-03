@@ -122,6 +122,17 @@ event_description.seed = "Some Secret" + str(seed_date)
 this will keep the date-based seed until 4:00 am on the next day and only then roll over to the next day.
 See [test_rollover.py](cwa_qr/test_rollover.py) for an in-depth look at the rollover code.
 
+Posters
+-------
+his Library has Support for compositing the QR-Code with a Poster, explaining its usage:
+"Checken Sie ein, stoppen Sie das Virus". The Poster-Functionality works by composing the QR-Code SVG with the
+Poster-SVG and thus only supports SVG-Output. Both Landscape and Portrait-Posters are supported.
+
+You can use [pyrsvg](https://www.cairographics.org/cookbook/pyrsvg/) if you need to convert the poster to a PNG
+or [svglib](https://pypi.org/project/svglib/) to convert it to a PDF.
+
+See [example_full.py](example_full.py) for an Example on how to use the Poster-Functionality.
+
 Python 2/3
 ----------
 This library supports Python 3.6+, however there is a backport to Python 2 available at https://github.com/MaZderMind/cwa-qr/tree/py2
