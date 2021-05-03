@@ -1,6 +1,9 @@
 #!/usr/bin/env python3
 
+import io
 from datetime import datetime, time, timezone
+
+import qrcode.image.svg
 
 import cwa_qr
 
@@ -29,3 +32,26 @@ qr = cwa_qr.generate_qr_code(event_description)
 img = qr.make_image(fill_color="black", back_color="white")
 img.save('example.png')
 print("generated example.png")
+
+# Save as PNG to Buffer for further usage
+img_bytes = io.BytesIO()
+img.save(img_bytes)
+print(len(img_bytes.getvalue()), " bytes of png")
+
+# Generate SVG
+svg = qr.make_image(image_factory=qrcode.image.svg.SvgPathFillImage)
+svg.save('example.svg')
+
+# Save as SVG to Buffer for further usage
+svg_bytes = io.BytesIO()
+svg.save(svg_bytes)
+print(len(svg_bytes.getvalue()), " bytes of svg")
+
+# Generate Poster-SVG
+poster = cwa_qr.generate_poster(event_description, cwa_qr.CwaPoster.POSTER_PORTRAIT)
+poster.save('poster.svg')
+print("generated poster.svg")
+
+# Save as Poster-SVG to Buffer for further usage
+poster_svg_bytes = poster.to_str()
+print(len(poster_svg_bytes), " bytes of poster-svg")

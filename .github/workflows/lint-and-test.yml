@@ -29,5 +29,7 @@ jobs:
     - name: Test with pytest
       run: ./test.sh
 
-    - name: Run the example.py
-      run: ./example.py
+    - name: Run the example-files
+      run: |
+        ./example.py
+        ./example_full.py
