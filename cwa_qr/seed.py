@@ -2,6 +2,9 @@ import random
 
 
 def construct_seed(seed) -> bytes:
+    if type(seed) == bytes and len(seed) == 16:
+        return seed
+
     if seed is None:
         seed = b''
 
