@@ -83,13 +83,13 @@ class CwaPoster(object):
 
     TRANSLATIONS = {
         POSTER_PORTRAIT: {
-            'file': 'poster_portrait.svg',
+            'file': 'poster/portrait.svg',
             'x': 80,
             'y': 60,
             'scale': 6
         },
         POSTER_LANDSCAPE: {
-            'file': 'poster_landscape.svg',
+            'file': 'poster/landscape.svg',
             'x': 42,
             'y': 120,
             'scale': 4.8
