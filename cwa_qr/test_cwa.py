@@ -90,6 +90,20 @@ def test_generate_qr_code_svg():
     assert svg_bytes.getvalue().startswith(b'<?xml')
 
 
+def test_generate_qr_code_with_poster_portrait_svg():
+    poster_svg = cwa.generate_poster(full_event_description, cwa.CwaPoster.POSTER_PORTRAIT)
+
+    svg_str = poster_svg.to_str()
+    assert svg_str.startswith(b'<?xml')
+
+
+def test_generate_qr_code_with_poster_landscape_svg():
+    poster_svg = cwa.generate_poster(full_event_description, cwa.CwaPoster.POSTER_LANDSCAPE)
+
+    svg_str = poster_svg.to_str()
+    assert svg_str.startswith(b'<?xml')
+
+
 def test_matches_code_generated_by_app():
     from_app = "https://e.coronawarn.app?v=1#" \
                "CAESJAgBEglLaW5vYWJlbmQaCUltIEtlbGxlciiQ2MCEBjDArMGEBhp2CAESYIMCzMxNed7UMADn9jGaFF1381k3ZUqX0vfYmX35" \
