@@ -10,7 +10,7 @@ full_event_description.location_description = 'Zuhause'
 full_event_description.location_address = 'Gau-Odernheim'
 full_event_description.start_date_time = datetime.now(timezone.utc)
 full_event_description.end_date_time = datetime.now(timezone.utc) + timedelta(days=2)
-full_event_description.location_type = cwa.lowlevel.LOCATION_TYPE_PERMANENT_WORKPLACE
+full_event_description.location_type = cwa.CwaLocation.permanent_workplace
 full_event_description.default_check_in_length_in_minutes = 4 * 60
 
 
@@ -103,7 +103,7 @@ def test_matches_code_generated_by_app():
     timezone_offset = timezone(timedelta(hours=2))
     e.start_date_time = datetime(2021, 5, 3, 19, 0, 0, tzinfo=timezone_offset).astimezone(timezone.utc)
     e.end_date_time = datetime(2021, 5, 3, 22, 0, 0, tzinfo=timezone_offset).astimezone(timezone.utc)
-    e.location_type = cwa.lowlevel.LOCATION_TYPE_TEMPORARY_CULTURAL_EVENT
+    e.location_type = cwa.CwaLocation.temporary_cultural_event
     e.default_check_in_length_in_minutes = 3 * 60
 
     e.seed = b'\xff\xcel\xc3\x8f\x0f\xae*\xb7\xbb<#p\xec\xc1v'

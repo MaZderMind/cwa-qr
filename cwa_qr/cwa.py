@@ -1,4 +1,5 @@
 import base64
+import enum
 from typing import Optional, Union
 
 import qrcode
@@ -11,6 +12,22 @@ PUBLIC_KEY_STR = 'gwLMzE153tQwAOf2MZoUXXfzWTdlSpfS99iZffmcmxOG9njSK4RTimFOFwDh6t
                  'juK49Oh83FWct6XpefPi9Skjxvvz53i9gaMmUEc96pbtoaA'
 
 PUBLIC_KEY = base64.standard_b64decode(PUBLIC_KEY_STR.encode('ascii'))
+
+
+class CwaLocation(enum.IntEnum):
+    unspecified = lowlevel.LOCATION_TYPE_UNSPECIFIED
+    permanent_other = lowlevel.LOCATION_TYPE_PERMANENT_OTHER
+    temporary_other = lowlevel.LOCATION_TYPE_TEMPORARY_OTHER
+    permanent_retail = lowlevel.LOCATION_TYPE_PERMANENT_RETAIL
+    permanent_food_service = lowlevel.LOCATION_TYPE_PERMANENT_FOOD_SERVICE
+    permanent_craft = lowlevel.LOCATION_TYPE_PERMANENT_CRAFT
+    permanent_workplace = lowlevel.LOCATION_TYPE_PERMANENT_WORKPLACE
+    permanent_educational_institution = lowlevel.LOCATION_TYPE_PERMANENT_EDUCATIONAL_INSTITUTION
+    permanent_public_building = lowlevel.LOCATION_TYPE_PERMANENT_PUBLIC_BUILDING
+    temporary_cultural_event = lowlevel.LOCATION_TYPE_TEMPORARY_CULTURAL_EVENT
+    temporary_club_activity = lowlevel.LOCATION_TYPE_TEMPORARY_CLUB_ACTIVITY
+    temporary_private_event = lowlevel.LOCATION_TYPE_TEMPORARY_PRIVATE_EVENT
+    temporary_worship_service = lowlevel.LOCATION_TYPE_TEMPORARY_WORSHIP_SERVICE
 
 
 class CwaEventDescription(object):
