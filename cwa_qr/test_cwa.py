@@ -110,3 +110,21 @@ def test_matches_code_generated_by_app():
 
     from_lib = cwa.generate_url(e)
     assert from_lib == from_app
+
+
+def test_location_enum():
+    # from String
+    assert cwa.CwaLocation['permanent_workplace'] == cwa.lowlevel.LOCATION_TYPE_PERMANENT_WORKPLACE
+
+    # from Int
+    assert cwa.CwaLocation(cwa.lowlevel.LOCATION_TYPE_PERMANENT_WORKPLACE) == cwa.CwaLocation.permanent_workplace
+
+    # to String
+    assert cwa.CwaLocation.permanent_workplace.name == 'permanent_workplace'
+
+    # iteration
+    for location in cwa.CwaLocation:
+        assert cwa.CwaLocation[location.name] == location
+
+    # counting
+    assert len(cwa.CwaLocation) == 13
