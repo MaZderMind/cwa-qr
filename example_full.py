@@ -52,6 +52,9 @@ poster = cwa_qr.generate_poster(event_description, cwa_qr.CwaPoster.POSTER_PORTR
 poster.save('poster.svg')
 print("generated poster.svg")
 
+# You can use pyrsvg (https://www.cairographics.org/cookbook/pyrsvg/) if you need to convert the poster to a PNG
+# or svglib (https://pypi.org/project/svglib/) to convert them to a PDF.
+
 # Save as Poster-SVG to Buffer for further usage
 poster_svg_bytes = poster.to_str()
 print(len(poster_svg_bytes), " bytes of poster-svg")
