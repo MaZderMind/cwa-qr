@@ -1,9 +1,10 @@
 import base64
 import enum
+from datetime import date, datetime
+
 from typing import Optional, Union
 
 import qrcode
-from datetime import datetime, date
 
 from . import cwa_pb2 as lowlevel
 from . import seed

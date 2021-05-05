@@ -28,6 +28,7 @@ setup(
         "protobuf==3.15.8",
         "qrcode==6.1",
         "six==1.15.0",
+        "svgutils==0.3.4",
     ],
     zip_safe=True,
 )

@@ -140,6 +140,8 @@ cython_debug/
 # Example-Files
 /example.png
 /example.svg
+/poster.svg
+/poster.png
 
 # IDEs
 /.idea
