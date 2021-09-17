@@ -24,7 +24,7 @@ setup(
     ],
     packages=find_packages(),
     install_requires=[
-        "Pillow==8.2.0",
+        "Pillow==8.3.2",
         "protobuf==3.15.8",
         "qrcode==6.1",
         "six==1.15.0",
