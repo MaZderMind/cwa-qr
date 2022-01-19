@@ -24,11 +24,11 @@ setup(
     ],
     packages=find_packages(),
     install_requires=[
-        "Pillow==8.*",
-        "protobuf==3.*",
-        "qrcode==6.*",
+        "Pillow",
+        "protobuf",
+        "qrcode",
         "six>=1.15.0",
-        "svgutils==0.3.*",
+        "svgutils",
     ],
     zip_safe=True,
 )
