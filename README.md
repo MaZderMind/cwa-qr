@@ -135,4 +135,4 @@ See [example_full.py](example_full.py) for an Example on how to use the Poster-F
 
 Python 2/3
 ----------
-This library supports Python 3.6+, however there is a backport to Python 2 available at https://github.com/MaZderMind/cwa-qr/tree/py2
+This library supports Python 3.7+, however there is a backport to Python 2 available at https://github.com/MaZderMind/cwa-qr/tree/py2

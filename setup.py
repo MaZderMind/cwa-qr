@@ -6,7 +6,7 @@ with open("README.md", "r", encoding="utf-8") as fh:
 
 setup(
     name='cwa_qr',
-    version='1.2.1',
+    version='1.2.2',
     description='Python Implementation of the CoronaWarnApp (CWA) Event Registration',
     long_description=long_description,
     long_description_content_type="text/markdown",
